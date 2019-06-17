@@ -40,6 +40,7 @@ def cutWord(path, stopWordDict):
     return segList
         
 def processText(path, label):
+<<<<<<< HEAD
     fileName = label + ".txt"
     for root, dirNames, files in os.walk(path):
         for fileName in files:
@@ -48,10 +49,13 @@ def processText(path, label):
             textCutWord = "__label__"+ label + " " + textCutWord
             with open(fileName, "a+", encoding="utf-8") as textSingel:
                 textSingel.write(textCutWord + "\n")
+=======
+>>>>>>> d31f4121821841800ac33daf6a4521349e94e800
     
 
 if __name__ == "__main__":
 #    createStopWordDict()
+<<<<<<< HEAD
     newsPath = "../THUCNews"
     threadFlag = []
     stopWordDict = readStopWordDict()
@@ -75,5 +79,31 @@ if __name__ == "__main__":
 #while threadFlag:
 #    pass
 #print("work is over!")
+=======
+    newsPath = "../THUCNews/体育"
+    threadFlag = []
+    stopWordDict = readStopWordDict()
+    for root, dirNames, files in os.walk(newsPath):
+        for fileName in files:
+            path = os.path.join(root, fileName)
+#            print(path)
+            label = "__sports__"
+            textCutWord = " ".join(cutWord(path, stopWordDict))
+            textCutWord = textCutWord + "    \t" + label
+            with open("sports.txt", "a+", encoding="utf-8") as textSingel:
+                textSingel.write(textCutWord + "\n")
+
+try:
+    #multip thread
+    _thread.start_new_thread( processText, ( path1, label, ))
+    _thread.start_new_thread( processText, ( path1, label, ))
+    _thread.start_new_thread( processText, ( path1, label, ))
+except:
+    print("Error: thread error!")
+
+while threadFlag:
+    pass
+print("work is over!")
+>>>>>>> d31f4121821841800ac33daf6a4521349e94e800
 
             
