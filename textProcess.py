@@ -7,6 +7,8 @@ Created on Mon Jun 17 18:21:43 2019
 import jieba
 import json
 import os
+import _thread
+
 
 def createStopWordDict():
     stopWordDict = {}
@@ -37,19 +39,41 @@ def cutWord(path, stopWordDict):
             segList.append(word)
     return segList
         
+def processText(path, label):
+    fileName = label + ".txt"
+    for root, dirNames, files in os.walk(path):
+        for fileName in files:
+            filePath = os.path.join(root, fileName)
+            textCutWord = " ".join(cutWord(filePath, stopWordDict))
+            textCutWord = "__label__"+ label + " " + textCutWord
+            with open(fileName, "a+", encoding="utf-8") as textSingel:
+                textSingel.write(textCutWord + "\n")
     
 
 if __name__ == "__main__":
 #    createStopWordDict()
-    newsPath = "../THUCNews/体育"
+    newsPath = "../THUCNews"
+    threadFlag = []
     stopWordDict = readStopWordDict()
     for root, dirNames, files in os.walk(newsPath):
-        for fileName in files:
-            path = os.path.join(root, fileName)
-#            print(path)
-            label = "__sports__"
-            textCutWord = " ".join(cutWord(path, stopWordDict))
-            textCutWord = textCutWord + "    \t" + label
-            with open("sports.txt", "a+", encoding="utf-8") as textSingel:
-                textSingel.write(textCutWord + "\n")
+        print(dirNames)
+#        for fileName in files:
+#            path = os.path.join(root, fileName)
+#            label = "__sports__"
+#            textCutWord = " ".join(cutWord(path, stopWordDict))
+#            textCutWord = textCutWord + "    \t" + label
+#            with open("sports.txt", "a+", encoding="utf-8") as textSingel:
+#                textSingel.write(textCutWord + "\n")
+
+#try:
+#    _thread.start_new_thread( processText, ( path1, label, ))
+#    _thread.start_new_thread( processText, ( path1, label, ))
+#    _thread.start_new_thread( processText, ( path1, label, ))
+#except:
+#    print("Error: thread error!")
+#
+#while threadFlag:
+#    pass
+#print("work is over!")
+
             

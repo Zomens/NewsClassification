@@ -1,0 +1,3 @@
+affairs        entertainment  finance  lotteryTicket  stock
+constellation  estate         game     society        technology
+education      fashion        home     sports
