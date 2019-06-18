@@ -33,11 +33,11 @@ def cutWord(path, stopWordDict):
             line = line.strip()
             text = text + " " + line
     cutList = jieba.cut(text)
-    segList = []
-    for word in cutList:
-        if word not in stopWordDict:
-            segList.append(word)
-    return segList
+    return list(cutList)
+    # for word in cutList:
+        # if word not in stopWordDict:
+            # segList.append(word)
+    # return segList
         
 def processText(path, label, stopWordDict):
     fileNameSave = label + ".txt"
@@ -85,5 +85,3 @@ if __name__ == "__main__":
 while threadFlag:
     pass
 print("work is over!")
-
-            
