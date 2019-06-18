@@ -39,29 +39,49 @@ def cutWord(path, stopWordDict):
             segList.append(word)
     return segList
         
-def processText(path, label):
-    fileName = label + ".txt"
+def processText(path, label, stopWordDict):
+    fileNameSave = label + ".txt"
     for root, dirNames, files in os.walk(path):
         for fileName in files:
             filePath = os.path.join(root, fileName)
             textCutWord = " ".join(cutWord(filePath, stopWordDict))
             textCutWord = "__label__"+ label + " " + textCutWord
-            with open(fileName, "a+", encoding="utf-8") as textSingel:
+            with open(fileNameSave, "a+", encoding="utf-8") as textSingel:
                 textSingel.write(textCutWord + "\n")
+    threadFlag.pop()
+    print(threadFlag)
+    print(label+" is over!")
 
 if __name__ == "__main__":
     newsPath = "../THUCNews"
-    threadFlag = []
     stopWordDict = readStopWordDict()
+    label = ""
+    threadFlag = []
+    for root, dirNames, files in os.walk(newsPath):
+#        for dir_ in dirNames:
+#            print(dir_)
+            for file in files:
+                if label != root[12:]:
+                    filePath = root
+                    label = root[12:]
+                    print(filePath)
+                    print(label)
+                    _thread.start_new_thread( processText, ( filePath, label, stopWordDict, ))
+                    threadFlag.append(1)
+#                print(label)
+#                print(os.path.join(root, fileName))
 
-try:
-    #multip thread
-    _thread.start_new_thread( processText, ( path1, label, ))
-    _thread.start_new_thread( processText, ( path1, label, ))
-    _thread.start_new_thread( processText, ( path1, label, ))
-except:
-    print("Error: thread error!")
-
+#    threadFlag = []
+#    stopWordDict = readStopWordDict()
+#
+#try:
+#    #multip thread
+#    _thread.start_new_thread( processText, ( path1, label, ))
+#    _thread.start_new_thread( processText, ( path1, label, ))
+#    _thread.start_new_thread( processText, ( path1, label, ))
+#except:
+#    print("Error: thread error!")
+#
 while threadFlag:
     pass
 print("work is over!")
